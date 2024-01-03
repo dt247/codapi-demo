@@ -1,0 +1,21 @@
+{
+    "alpine": {
+        "image": "codapi/alpine"
+    },
+    "python": {
+        "image": "codapi/python"
+    },
+    "cling": {
+        "image": "codapi/cling"
+    },
+    "cpp": {
+        "image": "codapi/cpp",
+        "writable": true,
+        "tmpfs": ["/tmp,size=16m"]
+    },
+    "sqlite": {
+        "image": "codapi/sqlite",
+        "writable": true,
+        "tmpfs": ["/tmp,size=16m"]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "run": {
+        "engine": "docker",
+        "entry": "main.cpp",
+        "steps": [
+            {
+                "box": "cling",
+                "command": ["cling", "-std=c++17", "main.cpp"]
+            }
+        ]
+    }
+}

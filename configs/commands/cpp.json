@@ -1,0 +1,12 @@
+{
+    "run": {
+        "engine": "docker",
+        "entry": "main.cpp",
+        "steps": [
+            {
+                "box": "cpp",
+                "command": ["/bin/sh", "-c", "g++ main.cpp -o /tmp/a.out && /tmp/a.out"]
+            }
+        ]
+    }
+}

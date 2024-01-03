@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>codapi</title>
+    
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+
+    <!-- codapi -->
+    <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.11.0/dist/snippet.css"/>
+
+    <!-- custom css style -->
+    <style>
+      .article-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px 200px 45px 200px;
+      }
+    </style>
+
+  </head>
+  
+  <body>
+    <article class="article-body">
+
+      <h1>Browser-only Playgrounds</h1>
+      <pre>console.log([1, 2, 3, 4, 5].map(x => x * x))</pre>
+      <codapi-snippet sandbox="javascript" editor="basic"></codapi-snippet>
+      <!-- <codapi-snippet sandbox="javascript" editor="off"></codapi-snippet> -->
+
+      <pre><code class="language-javascript editor"></code></pre>
+      <codapi-snippet sandbox="javascript" editor="external"></codapi-snippet>
+ 
+      <h1>Self-hosted Server</h1>
+      <pre><code class="language-python editor"></code></pre>
+      <codapi-snippet sandbox="python" url="http://localhost:1313/v1" editor="external"></codapi-snippet>
+
+      <h1>Templates</h1>
+      <script id="main.cpp" type="text/plain">
+        #include <iostream>
+        int main() {
+          ##CODE##
+        }
+      </script>
+      <pre><code class="language-cpp editor"></code></pre>
+      <codapi-snippet sandbox="cpp" url="http://localhost:1313/v1" editor="external" template="#main.cpp"></codapi-snippet>
+
+      <script id="header.cpp" type="text/plain">#!/usr/local/bin/cling
+        ##CODE##
+      </script>
+      <pre><code class="language-cpp editor"></code></pre>
+      <codapi-snippet sandbox="cling" url="http://localhost:1313/v1" editor="external" template="#header.cpp"></codapi-snippet>        
+
+      <h1>Code Blocks with Dependencies</h1>
+      <pre><code class="language-sql editor"></code></pre>
+      <codapi-snippet id="create.sql" sandbox="sqlite" url="http://localhost:1313/v1" editor="external"></codapi-snippet>
+
+      <pre><code class="language-sql editor"></code></pre>
+      <codapi-snippet id="insert.sql" depends-on="create.sql" sandbox="sqlite" url="http://localhost:1313/v1" editor="external"></codapi-snippet>
+
+      <pre><code class="language-sql editor"></code></pre>
+      <codapi-snippet id="select.sql" depends-on="insert.sql" sandbox="sqlite" url="http://localhost:1313/v1" editor="external"></codapi-snippet>
+
+    </article>
+
+    <!-- codejar -->
+    <script type="module">
+      import { CodeJar } from "https://cdn.jsdelivr.net/npm/codejar@4.2.0/dist/codejar.min.js";
+      const editors = document.querySelectorAll(".editor");
+      const options = { tab: ' '.repeat(4) }
+      const jars = Array.from(editors).map(editor => { return new CodeJar(editor, hljs.highlightBlock, options); })
+
+      jars[0].updateCode(
+`const msg = "Hello, World!"
+console.log(msg)
+`)
+
+      jars[1].updateCode(
+`msg = "Hello, World!"
+print(msg)
+for i in range(5):
+    print(i)`)
+
+      jars[2].updateCode(`// #include <iostream>       
+// int main() {
+//   ##CODE##
+// }      
+   
+std::cout << "hello there!" << std::endl;`)
+
+
+      jars[3].updateCode(`#include <iostream>
+
+template<typename ...Args> auto sum(Args ...args) { 
+  return (args + ... + 0); 
+}
+
+std::cout << sum(1, 2, 3) << std::endl;`)
+
+      jars[4].updateCode(
+`CREATE TABLE groups (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL
+);`)
+
+      jars[5].updateCode(
+`INSERT INTO groups
+(id, name)
+VALUES
+(1, 'Alice'),
+(2, 'Bob'),
+(3, 'Tom');`)
+
+      jars[6].updateCode(
+`SELECT * FROM groups;`)
+    </script>
+
+    <!-- codapi -->
+    <script src="https://unpkg.com/@antonz/codapi@0.11.0/dist/snippet.js"></script>
+  </body>
+</html>

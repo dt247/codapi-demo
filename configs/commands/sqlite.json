@@ -1,0 +1,12 @@
+{
+    "run": {
+        "engine": "docker",
+        "entry": "main.sql",
+        "steps": [
+            {
+                "box": "sqlite",
+                "command": ["sqlite3", "/tmp/main.db", ".read main.sql"]
+            }
+        ]
+    }
+}
